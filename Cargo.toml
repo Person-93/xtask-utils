@@ -1,0 +1,8 @@
+[package]
+name = "xtask-utils"
+authors = ["person93 <person93.person93@gmail.com>"]
+version = "0.1.0-dev"
+edition = "2021"
+description = "A collection of utilities for xtasks"
+license = "MIT OR Apache-2.0"
+publish = false
