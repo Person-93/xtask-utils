@@ -1,12 +1,16 @@
 #![forbid(unsafe_code)]
 
 pub mod prelude {
+  #[cfg(feature = "command_ext")]
+  pub use super::command_ext::prelude::*;
   #[cfg(feature = "result_ext")]
   pub use super::result_ext::prelude::*;
 }
 
 #[cfg(feature = "any_err")]
 pub mod any_err;
+#[cfg(feature = "command_ext")]
+pub mod command_ext;
 #[cfg(feature = "result_ext")]
 pub mod result_ext;
 
