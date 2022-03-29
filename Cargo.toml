@@ -20,3 +20,7 @@ required-features = ["any_err"]
 [[test]]
 name = "result_ext"
 required-features = ["result_ext"]
+
+[[test]]
+name = "command_ext"
+required-features = ["command_ext"]
