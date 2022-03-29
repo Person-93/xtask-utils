@@ -4,7 +4,7 @@ use crate::{
 };
 use std::{
   borrow::Cow,
-  convert,
+  convert, fs,
   fs::File,
   path::{Path, PathBuf},
   process::{Child, ChildStdout, Command, ExitStatus, Stdio},
@@ -13,7 +13,7 @@ use std::{
 #[macro_export]
 macro_rules! script {
   ($(($($command:tt)+))*) => {
-    || -> Result<(), $crate::AnyErr> {
+    || -> Result<(), $crate::any_err::AnyErr> {
       $( pipe!($($command)*).wait()?; )*
       Ok(())
     }
@@ -30,11 +30,11 @@ macro_rules! run_cmd {
 #[macro_export]
 macro_rules! pipe {
   ($($command:tt)|*) => {
-    pipe!($($command)|* > $crate::PipeIo::Inherit)
+    pipe!($($command)|* > $crate::pipe::PipeIo::Inherit)
   };
 
   ($($command:tt)|* > $($output:tt)*) => {
-    $crate::Pipe::new(vec![$(&$command as &dyn $crate::PipeSection),*], {
+    $crate::pipe::Pipe::new(vec![$(&$command as &dyn $crate::pipe::PipeSection),*], {
       $($output)*
     })
   };
@@ -198,18 +198,26 @@ impl TryInto<Stdio> for PipeIo {
   fn try_into(self) -> Result<Stdio> {
     match self {
       PipeIo::Inherit => Ok(Stdio::inherit()),
-      PipeIo::File(path) => match File::options()
-        .write(true)
-        .create(true)
-        .truncate(true)
-        .open(&path)
-      {
-        Ok(file) => Ok(Stdio::from(file)),
-        Err(err) => Err(Error {
+      PipeIo::File(path) => {
+        let parent = path.parent().unwrap();
+        fs::create_dir_all(parent).map_err(|err| Error {
           name: path.to_string_lossy().into_owned(),
           kind: ErrorKind::File(err),
-        }),
-      },
+        })?;
+
+        match File::options()
+          .write(true)
+          .create(true)
+          .truncate(true)
+          .open(&path)
+        {
+          Ok(file) => Ok(Stdio::from(file)),
+          Err(err) => Err(Error {
+            name: path.to_string_lossy().into_owned(),
+            kind: ErrorKind::File(err),
+          }),
+        }
+      }
       PipeIo::Child(child) => Ok(Stdio::from(child)),
     }
   }
@@ -252,7 +260,7 @@ pub enum JoinHandle {
 }
 
 impl JoinHandle {
-  fn join(self) -> Result<Joined> {
+  pub fn join(self) -> Result<Joined> {
     match self {
       JoinHandle::Cmd(mut cmd) => {
         Ok(Joined::Cmd(cmd.wait().map_err(|err| Error {
@@ -271,7 +279,7 @@ impl JoinHandle {
     }
   }
 
-  fn cancel(self) {
+  pub fn cancel(self) {
     match self {
       JoinHandle::Cmd(mut cmd) => {
         cmd.kill().ok();
@@ -286,13 +294,20 @@ impl JoinHandle {
 }
 
 #[must_use]
-enum Joined {
+pub enum Joined {
   Cmd(ExitStatus),
   Multiple(Vec<Joined>),
 }
 
 impl Joined {
-  fn exit_on_err(self) {
+  pub fn success(&self) -> bool {
+    match self {
+      Joined::Cmd(status) => status.success(),
+      Joined::Multiple(joined) => joined.iter().all(Joined::success),
+    }
+  }
+
+  pub fn exit_on_err(self) {
     match self {
       Joined::Cmd(status) => status.exit_on_err(),
       Joined::Multiple(joined) => {
