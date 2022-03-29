@@ -96,8 +96,8 @@ fn print_status_and_exit(status: &ExitStatus) -> ! {
 
 #[derive(Debug)]
 pub struct Error {
-  name: String,
-  kind: ErrorKind,
+  pub(crate) name: String,
+  pub(crate) kind: ErrorKind,
 }
 
 impl Error {
