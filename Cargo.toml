@@ -16,3 +16,7 @@ result_ext = ["any_err"]
 [[test]]
 name = "any_err"
 required-features = ["any_err"]
+
+[[test]]
+name = "result_ext"
+required-features = ["result_ext"]
