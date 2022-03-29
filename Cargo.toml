@@ -24,3 +24,7 @@ required-features = ["result_ext"]
 [[test]]
 name = "command_ext"
 required-features = ["command_ext"]
+
+[[test]]
+name = "pipe"
+required-features = ["pipe"]
