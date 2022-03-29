@@ -9,3 +9,4 @@ publish = false
 
 [features]
 any_err = []
+result_ext = ["any_err"]

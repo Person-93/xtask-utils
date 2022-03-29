@@ -1,9 +1,14 @@
 #![forbid(unsafe_code)]
 
-pub mod prelude {}
+pub mod prelude {
+  #[cfg(feature = "result_ext")]
+  pub use super::result_ext::prelude::*;
+}
 
 #[cfg(feature = "any_err")]
 pub mod any_err;
+#[cfg(feature = "result_ext")]
+pub mod result_ext;
 
 #[macro_export]
 macro_rules! tasks {
