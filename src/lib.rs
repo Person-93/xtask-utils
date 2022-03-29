@@ -2,6 +2,9 @@
 
 pub mod prelude {}
 
+#[cfg(feature = "any_err")]
+pub mod any_err;
+
 #[macro_export]
 macro_rules! tasks {
   ($($name:ident)*) => {

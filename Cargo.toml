@@ -6,3 +6,6 @@ edition = "2021"
 description = "A collection of utilities for xtasks"
 license = "MIT OR Apache-2.0"
 publish = false
+
+[features]
+any_err = []
