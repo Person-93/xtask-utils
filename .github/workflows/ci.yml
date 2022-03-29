@@ -82,8 +82,8 @@ jobs:
 
     - uses: actions-rs/cargo@v1
       with:
-        command: feature-matrix
-        args: nextest -- run --no-fail-fast --color=always
+        command: xtest
+        args: --no-fail-fast
 
   docs:
     name: Docs

@@ -1,0 +1,2 @@
+[alias]
+xtest = "feature-matrix nextest -- run --color=always"
