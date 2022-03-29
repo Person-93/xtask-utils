@@ -12,3 +12,7 @@ any_err = []
 command_ext = []
 pipe = ["command_ext", "result_ext"]
 result_ext = ["any_err"]
+
+[[test]]
+name = "any_err"
+required-features = ["any_err"]
