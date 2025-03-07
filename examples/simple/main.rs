@@ -2,7 +2,6 @@
 
 use clap::Parser;
 
-
 // call this macro with the names of all of your tasks
 // this will:
 //  - add `use my_task;` statements for each task
