@@ -2,7 +2,7 @@ use std::{
   env, fs,
   time::{SystemTime, UNIX_EPOCH},
 };
-use xtask_utils::pipe;
+use xtask_utils::cmd;
 
 #[test]
 fn happy_path() {
@@ -15,7 +15,7 @@ fn happy_path() {
   );
   temp.set_extension("txt");
 
-  pipe!("echo hello world" | "cat" | "cat" > temp.clone())
+  cmd!("echo hello world" | "cat" | "cat" > temp.clone())
     .wait()
     .unwrap();
 
@@ -32,13 +32,13 @@ fn happy_path() {
 
 #[test]
 fn single_command_fail() {
-  let result = pipe!(FAIL_CMD).spawn().unwrap().join().unwrap();
+  let result = cmd!(FAIL_CMD).spawn().unwrap().join().unwrap();
   assert!(!result.success());
 }
 
 #[test]
 fn multi_command_first_fail() {
-  let result = pipe!(FAIL_CMD | "cat" | "cat")
+  let result = cmd!(FAIL_CMD | "cat" | "cat")
     .spawn()
     .unwrap()
     .join()
@@ -48,7 +48,7 @@ fn multi_command_first_fail() {
 
 #[test]
 fn multi_command_last_fail() {
-  let result = pipe!("echo hello" | "cat" | FAIL_CMD)
+  let result = cmd!("echo hello" | "cat" | FAIL_CMD)
     .spawn()
     .unwrap()
     .join()
@@ -58,7 +58,7 @@ fn multi_command_last_fail() {
 
 #[test]
 fn multi_command_mid_fail() {
-  let result = pipe!("echo hello" | FAIL_CMD | "echo")
+  let result = cmd!("echo hello" | FAIL_CMD | "echo")
     .spawn()
     .unwrap()
     .join()

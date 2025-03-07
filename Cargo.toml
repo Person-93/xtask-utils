@@ -11,7 +11,7 @@ autoexamples = false
 [features]
 any_err = []
 command_ext = []
-pipe = ["command_ext", "result_ext"]
+script = ["command_ext", "result_ext"]
 result_ext = ["any_err"]
 
 [[test]]
@@ -28,11 +28,16 @@ required-features = ["command_ext"]
 
 [[test]]
 name = "pipe"
-required-features = ["pipe"]
+required-features = ["script"]
 
 [[example]]
 name = "simple"
 path = "examples/simple/main.rs"
+
+[[example]]
+name = "uses_script"
+path = "examples/uses_script/main.rs"
+required-features = ["script"]
 
 [dependencies]
 clap = { version = "4.5.31", features = ["derive"] }

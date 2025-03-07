@@ -11,7 +11,7 @@ pub mod prelude {
 pub mod any_err;
 #[cfg(feature = "command_ext")]
 pub mod command_ext;
-#[cfg(feature = "pipe")]
+#[cfg(feature = "script")]
 pub mod pipe;
 #[cfg(feature = "result_ext")]
 pub mod result_ext;

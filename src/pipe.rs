@@ -14,7 +14,7 @@ use std::{
 macro_rules! script {
   ($(($($command:tt)+))*) => {
     || -> Result<(), $crate::command_ext::Error> {
-      $( $crate::pipe!($($command)*).wait()?; )*
+      $( $crate::cmd!($($command)*).wait()?; )*
       Ok(())
     }()
   };
@@ -23,14 +23,14 @@ macro_rules! script {
 #[macro_export]
 macro_rules! run_cmd {
   ($($command:tt)*) => {
-    $crate::pipe!($($command)*).exec()
+    $crate::cmd!($($command)*).exec()
   };
 }
 
 #[macro_export]
-macro_rules! pipe {
+macro_rules! cmd {
   ($($command:tt)|*) => {
-    pipe!($($command)|* > $crate::pipe::PipeIo::Inherit)
+    $crate::cmd!($($command)|* > $crate::pipe::PipeIo::Inherit)
   };
 
   ($($command:tt)|* > $($output:tt)*) => {
