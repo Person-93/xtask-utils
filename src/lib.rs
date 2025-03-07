@@ -21,7 +21,7 @@ macro_rules! tasks {
   ($($name:ident)*) => {
     $(mod $name;)*
 
-    #[derive(Subcommand)]
+    #[derive(::clap::Parser)]
     #[allow(non_camel_case_types)]
     enum Task {
       $($name($name::Cli)),*
