@@ -6,6 +6,7 @@ edition = "2021"
 description = "A collection of utilities for xtasks"
 license = "MIT OR Apache-2.0"
 publish = false
+autoexamples = false
 
 [features]
 any_err = []
@@ -28,6 +29,10 @@ required-features = ["command_ext"]
 [[test]]
 name = "pipe"
 required-features = ["pipe"]
+
+[[example]]
+name = "simple"
+path = "examples/simple/main.rs"
 
 [dependencies]
 clap = { version = "4.5.31", features = ["derive"] }
