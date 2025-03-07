@@ -1,7 +1,7 @@
 default_stages: [ pre-commit ]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -16,7 +16,7 @@ repos:
       # NOTE uncomment no-commit-to-branch once project gets underway
   #      - id: no-commit-to-branch
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 2.1.5
+    rev: 3.0.0
     hooks:
       - id: check-mailmap
       - id: forbid-binary
@@ -24,11 +24,11 @@ repos:
       - id: script-must-have-extension
       - id: script-must-not-have-extension
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.8.0
+    rev: v0.10.0
     hooks:
       - id: shellcheck
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v5.0.0
+    rev: v9.21.0
     hooks:
       - id: commitlint
         stages: [ commit-msg ]
