@@ -13,10 +13,10 @@ use std::{
 #[macro_export]
 macro_rules! script {
   ($(($($command:tt)+))*) => {
-    || -> Result<(), $crate::any_err::AnyErr> {
-      $( pipe!($($command)*).wait()?; )*
+    || -> Result<(), $crate::command_ext::Error> {
+      $( $crate::pipe!($($command)*).wait()?; )*
       Ok(())
-    }
+    }()
   };
 }
 
